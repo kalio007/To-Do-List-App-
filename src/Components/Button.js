@@ -13,8 +13,7 @@ function Button({ children, variant, type, ...rest }) {
         styles.button,
         styles['button--{buttonTypes[variant]}'],
       ])}
-      type="button"
-      // type={type === 'submit' ? 'submit' : 'botton'}
+      type={type === 'submit' ? 'submit' : 'button'}
       {...rest} // to pass more informations as i continue.
     >
       {children}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Toaster } from 'react-hot-toast';
 import style from './styles/modules/app.module.scss';
 import AppHeader from './Components/AppHeader';
 import PageTitle from './Components/PageTitle';
@@ -12,6 +13,7 @@ function App() {
         <AppHeader />
         <AppContent />
       </div>
+      <Toaster />
     </div>
   );
 }

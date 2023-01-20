@@ -1,22 +1,36 @@
 import React from 'react';
+import toast from 'react-hot-toast';
 import { MdOutlineClose } from 'react-icons/md';
+import { v4 as uuid } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../Slices/TodoSlice';
 import styles from '../styles/modules/modal.module.scss';
 import Button from './Button';
 
 function ToDoModel({ modelOpen, setModelOpen }) {
   const [title, setTitle] = React.useState('');
   const [status, setStatus] = React.useState('Incomplete');
+  const dispatch = useDispatch();
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ title, status });
+    if (title && status) {
+      dispatch(
+        addTodo({
+          id: uuid(),
+          title,
+          status,
+          time: new Date().toLocaleDateString(),
+        })
+      );
+      toast.success('Task added sucessfully');
+    }
   };
   return (
     <div>
       {modelOpen && (
         <div className={styles.wrapper}>
           <div className={styles.container}>
-            <div
-              // below shows how a div can be made to act as a button and control state
+            <div // below shows how a div can be made to act as a button and control state
               className={styles.closeButton}
               onClick={() => setModelOpen(false)}
               onKeyDown={() => setModelOpen(false)}
@@ -52,12 +66,12 @@ function ToDoModel({ modelOpen, setModelOpen }) {
                 </select>
               </label>
               <div className={styles.buttonContainer}>
-                <Button type="submit" vairant="primary">
+                <Button type="submit" variant="primary">
                   Add Task
                 </Button>
                 <Button
                   type="button"
-                  vairant="secondary"
+                  variant="secondary"
                   onClick={() => setModelOpen(false)}
                 >
                   Cancel
