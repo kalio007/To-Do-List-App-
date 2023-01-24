@@ -13,7 +13,14 @@ function App() {
         <AppHeader />
         <AppContent />
       </div>
-      <Toaster />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          style: {
+            fontsize: '2rem',
+          },
+        }}
+      />
     </div>
   );
 }

@@ -3,26 +3,40 @@ import toast from 'react-hot-toast';
 import { MdOutlineClose } from 'react-icons/md';
 import { v4 as uuid } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { addTodo } from '../Slices/TodoSlice';
+import { addTodo, updateTodo } from '../Slices/TodoSlice';
 import styles from '../styles/modules/modal.module.scss';
 import Button from './Button';
 
-function ToDoModel({ modelOpen, setModelOpen }) {
+function ToDoModel({ modelOpen, setModelOpen, type, todo }) {
   const [title, setTitle] = React.useState('');
   const [status, setStatus] = React.useState('Incomplete');
   const dispatch = useDispatch();
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (title === '') {
+      toast.error('please enter a Title');
+    }
     if (title && status) {
-      dispatch(
-        addTodo({
-          id: uuid(),
-          title,
-          status,
-          time: new Date().toLocaleDateString(),
-        })
-      );
-      toast.success('Task added sucessfully');
+      if (type === 'add') {
+        dispatch(
+          addTodo({
+            id: uuid(),
+            title,
+            status,
+            time: new Date().toLocaleDateString(),
+          })
+        );
+        toast.success('Task added sucessfully');
+      }
+      if (type === 'update') {
+        if (todo.title !== title || todo.status !== status) {
+          dispatch(updateTodo(...todo, title, status));
+        } else {
+          toast.error('No changes Made');
+        }
+      }
+    } else {
+      toast.error('Title shouldnt be empty');
     }
   };
   return (
@@ -43,7 +57,9 @@ function ToDoModel({ modelOpen, setModelOpen }) {
               className={styles.form}
               onSubmit={(event) => handleSubmit(event)}
             >
-              <h1 className={styles.formTitle}>Add Task</h1>
+              <h1 className={styles.formTitle}>
+                {type === 'Update' ? 'Update' : 'Add'} Task
+              </h1>
               <label htmlFor="title">
                 title
                 <input
@@ -67,7 +83,7 @@ function ToDoModel({ modelOpen, setModelOpen }) {
               </label>
               <div className={styles.buttonContainer}>
                 <Button type="submit" variant="primary">
-                  Add Task
+                  {type === 'Update' ? 'Update' : 'Add'} Task
                 </Button>
                 <Button
                   type="button"
