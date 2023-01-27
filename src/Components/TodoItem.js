@@ -7,6 +7,7 @@ import styles from '../styles/modules/todoItem.module.scss';
 import { getClasses } from '../utils/GetClasses';
 import { deleteTodo } from '../Slices/TodoSlice';
 import ToDoModel from './ToDoModel';
+import CheckButton from './CheckButton';
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function TodoItem({ todo }) {
     <div>
       <div className={styles.item}>
         <div className={styles.todoDetails}>
-          ()
+          <CheckButton />
           <div className={styles.text}>
             <p
               className={getClasses([
